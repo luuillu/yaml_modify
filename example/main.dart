@@ -3,6 +3,7 @@
 
 library yaml_modify.example;
 
+import 'dart:collection';
 import 'dart:io' show File;
 
 import 'package:yaml_modify/yaml_modify.dart';
@@ -13,9 +14,9 @@ main() {
   final yaml = loadYaml(file.readAsStringSync());
 
   final modifiable = getModifiableNode(yaml);
-  modifiable['flutter'] = {
-    'assets':['img1.png', 'img2.png']
-  };
+  modifiable.putIfAbsent('flutter', () => HashMap());
+  modifiable['flutter']["assets"] = ['img1.png', 'img2.png'];
+
 
   final strYaml = toYamlString(modifiable);
   File("pubspec-output.yaml").writeAsStringSync(strYaml);
