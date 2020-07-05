@@ -20,7 +20,7 @@ dynamic getModifiableNode(node) {
 
 /// Serializes [node] into a String and returns it.
 String toYamlString(node) {
-  var sb = new StringBuffer();
+  var sb = StringBuffer();
   writeYamlString(node, sb);
   return sb.toString();
 }
