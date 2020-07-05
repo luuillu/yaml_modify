@@ -10,7 +10,7 @@ dynamic getModifiableNode(node) {
     return Map.of(
         node.map((key, value) => MapEntry(key, getModifiableNode(value))));
   } else if (node is Iterable) {
-    List.of(node.map((e) => getModifiableNode(e)));
+    return List.of(node.map((e) => getModifiableNode(e)));
   } else {
     return node;
   }

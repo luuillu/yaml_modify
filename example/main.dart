@@ -9,6 +9,7 @@ import 'package:yaml_modify/yaml_modify.dart';
 
 main() {
   File file = File("pubspec.yaml");
+
   final yaml = loadYaml(file.readAsStringSync());
 
   final modifiable = getModifiableNode(yaml);
