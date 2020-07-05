@@ -27,3 +27,5 @@ A simple usage example:
 Please file feature requests and bugs at the [issue tracker][tracker].
 
 [tracker]: https://github.com/luuillu/yaml_modify
+
+Thank Andersmholmgren and his library(https://github.com/Andersmholmgren/yamlicious)

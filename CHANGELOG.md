@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+  format code
+
+## 0.1.1
+  format code
+
 ## 0.1.0
   change project
 
