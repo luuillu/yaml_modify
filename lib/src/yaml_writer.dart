@@ -6,6 +6,18 @@ library yaml.writer;
 import 'package:quiver/iterables.dart';
 
 
+
+dynamic getModifiableNode(node) {
+  if (node is Map) {
+    return Map.of(node
+        .map((key, value) => MapEntry(key, getModifiableNode(value))));
+  } else if (node is Iterable) {
+    List.of(node.map((e) => getModifiableNode(e)));
+  } else {
+    return node;
+  }
+}
+
 /// Serializes [node] into a String and returns it.
 String toYamlString(node) {
   var sb = new StringBuffer();
@@ -66,7 +78,9 @@ Iterable<String> _sortKeys(Map m) {
     }
   });
 
-  return concat([simple..sort(), maps..sort(), other..sort()]).toList().map((e) => e.toString());
+  return concat([simple..sort(), maps..sort(), other..sort()])
+      .toList()
+      .map((e) => e.toString());
 }
 
 void _listToYamlString(

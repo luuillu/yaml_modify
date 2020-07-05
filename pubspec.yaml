@@ -1,8 +1,8 @@
-author: "Anders Holmgren <andersmholmgren@gmail.com>"
-description: "A library for writing yaml files"
-homepage: "https://github.com/Andersmholmgren/yamlicious"
-name: "yamlicious"
-version: "0.0.5"
+author: "Anders Holmgren <xygood@qq.com, andersmholmgren@gmail.com>"
+description: "A library for modify yaml files"
+homepage: "https://github.com/luuillu/yaml_modify"
+name: "yaml_modify"
+version: "0.0.6"
 dependencies: 
   quiver: "^2.1.3"
 dev_dependencies: 

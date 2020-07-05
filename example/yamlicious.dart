@@ -6,20 +6,20 @@ library yamlicious.example;
 import 'dart:convert';
 import 'dart:io' show File;
 
-import 'package:yaml/yaml.dart' show YamlList, YamlMap, loadYaml, loadYamlDocument, loadYamlNode;
+import 'package:yaml/yaml.dart' show loadYaml;
+import 'package:yamlicious/src/yaml_writer.dart';
 import 'package:yamlicious/yamlicious.dart' show toYamlString;
 
 main() {
-  File file = new File("pubspec.yaml");
-  var yaml = loadYaml(file.readAsStringSync());
+  File file = File("pubspec.yaml");
+  final yaml = loadYaml(file.readAsStringSync());
 
-  final yamlMap = Map.from(yaml);
-  final flutterMap = yamlMap['flutter'] =  Map.from(yaml['flutter']);
-  final assetList = ['pkg.png', 'pkg.png'];
-  flutterMap['assets'] = assetList;
-  final strAll = toYamlString(yamlMap);
+  final modifiable = getModifiableNode(yaml);
+  modifiable['flutter'] = {
+    'assets':['img1.png', 'img2.png']
+  };
 
-
-file.writeAsStringSync(strAll);
-  print(strAll);
+  final strYaml = toYamlString(modifiable);
+  File("pubspec-output.yaml").writeAsStringSync(strYaml);
+  print(strYaml);
 }
