@@ -5,12 +5,10 @@ library yaml.writer;
 
 import 'package:quiver/iterables.dart';
 
-
-
 dynamic getModifiableNode(node) {
   if (node is Map) {
-    return Map.of(node
-        .map((key, value) => MapEntry(key, getModifiableNode(value))));
+    return Map.of(
+        node.map((key, value) => MapEntry(key, getModifiableNode(value))));
   } else if (node is Iterable) {
     List.of(node.map((e) => getModifiableNode(e)));
   } else {

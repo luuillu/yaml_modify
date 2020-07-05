@@ -1,4 +1,4 @@
-description: "A library for modify yaml files"
+description: "A library for modify yaml files, for example you can modify pubspec.yaml by this library"
 homepage: "https://github.com/luuillu/yaml_modify"
 name: "yaml_modify"
 version: "0.1.0"
