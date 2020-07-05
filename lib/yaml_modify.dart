@@ -5,6 +5,7 @@
 ///
 /// Adds support for writing yaml files. Ideally this should be folded into
 /// the core yaml package.
-library yamlicious;
+library yaml_modify;
 
 export 'src/yaml_writer.dart';
+export 'package:yaml/yaml.dart';

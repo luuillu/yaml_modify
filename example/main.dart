@@ -1,14 +1,11 @@
 // Copyright (c) 2015, Anders Holmgren. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-library yamlicious.example;
+library yaml_modify.example;
 
-import 'dart:convert';
 import 'dart:io' show File;
 
-import 'package:yaml/yaml.dart' show loadYaml;
-import 'package:yamlicious/src/yaml_writer.dart';
-import 'package:yamlicious/yamlicious.dart' show toYamlString;
+import 'package:yaml_modify/yaml_modify.dart';
 
 main() {
   File file = File("pubspec.yaml");
