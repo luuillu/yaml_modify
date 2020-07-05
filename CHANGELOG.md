@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.6
+  support modify yaml file
+
 ## 0.0.5
 
 - strong mode
