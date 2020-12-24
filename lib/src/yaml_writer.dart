@@ -88,20 +88,14 @@ String _multiLine(String s, bool quotes, int indent) {
       return s;
     }
   } else {
-    var newString = s;
-    var stringList = <String>[];
-    while (newString.length > 80) {
-      var index = newString.lastIndexOf(' ', 80);
-      stringList.add(newString.substring(0, index + 1));
-      newString = newString.substring(index + 1);
-    }
-    stringList.add(newString);
-    newString = '>-';
-    for (var subString in stringList) {
-      newString += '\n${' ' * indent}$subString';
+    var returnString = '>-';
+    while (s.length > 80) {
+      var index = s.lastIndexOf(' ', 80);
+      returnString += '\n${' ' * indent}${s.substring(0, index + 1)}';
+      s = s.substring(index + 1);
     }
 
-    return newString;
+    return returnString;
   }
 }
 
