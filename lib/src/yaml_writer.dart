@@ -81,6 +81,9 @@ void _writeYamlString(String node, StringSink ss, int indent) {
 
 /// cleanly formats multi-line strings, using 80 character max
 String _multiLine(String s, bool quotes, int indent) {
+  if (specialCharacters.contains(s[0])) {
+    quotes = true;
+  }
   if (s.length <= 80) {
     if (quotes) {
       return "'$s'";
