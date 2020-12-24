@@ -21,7 +21,9 @@ String toYamlString(node, {bool sort}) {
   var sb = StringBuffer();
   _sort = sort ?? false;
   writeYamlString(node, sb);
-  return sb.toString();
+
+  /// moves text to be inline with [hyphen '-']
+  return sb.toString().replaceAll(RegExp(r'-\s\n\s*'), '- ');
 }
 
 var _sort = false;
