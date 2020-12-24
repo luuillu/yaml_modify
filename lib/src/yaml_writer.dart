@@ -37,7 +37,7 @@ void _writeYamlType(node, int indent, StringSink ss, bool isTopLevel) {
   } else if (node is Iterable) {
     _listToYamlString(node, indent, ss, isTopLevel);
   } else if (node is String) {
-    _writeYamlString(node, ss);
+    _writeYamlString(node, ss, indent + 2);
   } else if (node is double) {
     ss.writeln("!!float $node");
   } else {
@@ -46,7 +46,7 @@ void _writeYamlType(node, int indent, StringSink ss, bool isTopLevel) {
 }
 
 /// Provides formatting if [node] is a String and writes to the [sink].
-void _writeYamlString(String node, StringSink ss) {
+void _writeYamlString(String node, StringSink ss, int indent) {
   /// quotes single length special characters
   if (node.length == 1 && specialCharacters.contains(node)) {
     ss..writeln("'${_escapeString(node)}'");
@@ -59,15 +59,42 @@ void _writeYamlString(String node, StringSink ss) {
 
     /// if it contains a [colon, ':'] then put it in quotes to not confuse Yaml
   } else if (node.contains(':')) {
-    ss..writeln("'${_escapeString(node)}'");
+    ss..writeln("'${_multiLine(_escapeString(node), true, indent)}'");
 
     /// if it contains [slashes, '\'], escape them
   } else if (node.contains('\\')) {
-    ss..writeln("'${_escapeString(node).replaceAll(r'\', r'\\')}'");
+    ss
+      ..writeln(
+          "'${_multiLine(_escapeString(node).replaceAll(r'\', r'\\'), true, indent)}'");
   } else {
-    ss..writeln('${_escapeString(node)}');
+    ss..writeln('${_multiLine(_escapeString(node), false, indent)}');
   }
-  ss..writeln('"${_escapeString(node)}"');
+}
+
+/// cleanly formats multi-line strings, using 80 character max
+String _multiLine(String s, bool quotes, int indent) {
+  if (s.length <= 80) {
+    if (quotes) {
+      return "'$s'";
+    } else {
+      return s;
+    }
+  } else {
+    var newString = s;
+    var stringList = <String>[];
+    while (newString.length > 80) {
+      var index = newString.lastIndexOf(' ', 80);
+      stringList.add(newString.substring(0, index + 1));
+      newString = newString.substring(index + 1);
+    }
+    stringList.add(newString);
+    newString = '>-';
+    for (var subString in stringList) {
+      newString += '\n${' ' * indent}$subString';
+    }
+
+    return newString;
+  }
 }
 
 String _withEscapes(String s) =>
