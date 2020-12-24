@@ -59,13 +59,13 @@ void _writeYamlString(String node, StringSink ss, int indent) {
 
     /// if it contains a [colon, ':'] then put it in quotes to not confuse Yaml
   } else if (node.contains(':')) {
-    ss..writeln("'${_multiLine(_escapeString(node), true, indent)}'");
+    ss..writeln('${_multiLine(_escapeString(node), true, indent)}');
 
     /// if it contains [slashes, '\'], escape them
   } else if (node.contains('\\')) {
     ss
       ..writeln(
-          "'${_multiLine(_escapeString(node).replaceAll(r'\', r'\\'), true, indent)}'");
+          '${_multiLine(_escapeString(node).replaceAll(r'\', r'\\'), true, indent)}');
   } else {
     ss..writeln('${_multiLine(_escapeString(node), false, indent)}');
   }
