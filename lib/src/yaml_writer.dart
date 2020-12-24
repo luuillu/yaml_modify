@@ -110,8 +110,7 @@ String _withEscapes(String s) => s
     .replaceAll('\r', '\\r')
     .replaceAll('\t', '\\t')
     .replaceAll('\n', '\\n')
-    .replaceAll('\"', '\\"')
-    .replaceAll("\'", "\\'");
+    .replaceAll('\"', '\\"');
 
 String _escapeString(String s) =>
     s.replaceAll('"', r'\"').replaceAll("\n", r"\n");
