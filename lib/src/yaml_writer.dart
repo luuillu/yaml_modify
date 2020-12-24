@@ -86,7 +86,11 @@ String _multiLine(String s, bool quotes, int indent) {
   }
   if (s.length <= 80) {
     if (quotes) {
-      return "'$s'";
+      if (s.contains("'")) {
+        return '"$s"';
+      } else {
+        return "'$s'";
+      }
     } else {
       return s;
     }
