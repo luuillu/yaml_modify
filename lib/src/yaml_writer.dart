@@ -106,8 +106,12 @@ String _multiLine(String s, bool quotes, int indent) {
   }
 }
 
-String _withEscapes(String s) =>
-    s.replaceAll('\r', '\\r').replaceAll('\t', '\\t').replaceAll('\n', '\\n');
+String _withEscapes(String s) => s
+    .replaceAll('\r', '\\r')
+    .replaceAll('\t', '\\t')
+    .replaceAll('\n', '\\n')
+    .replaceAll('\"', '\\"')
+    .replaceAll("\'", "\\'");
 
 String _escapeString(String s) =>
     s.replaceAll('"', r'\"').replaceAll("\n", r"\n");
