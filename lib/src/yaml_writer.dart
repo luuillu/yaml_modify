@@ -41,6 +41,7 @@ void _writeYamlType(node, int indent, StringSink ss, bool isTopLevel) {
   } else if (node is String) {
     _writeYamlString(node, ss, indent + 2);
   } else if (node is double) {
+    print(node);
     ss.writeln("!!float $node");
   } else {
     ss.writeln(node);
@@ -52,6 +53,11 @@ void _writeYamlString(String node, StringSink ss, int indent) {
   /// quotes single length special characters
   if (node.length == 1 && specialCharacters.contains(node)) {
     ss..writeln("'${_escapeString(node)}'");
+
+    /// most numbers are found to be strings, and they should be displayed as
+    /// such, not as numbers
+  } else if (int.tryParse(node) != null || double.tryParse(node) != null) {
+    ss..writeln('${_multiLine(_escapeString(node), true, indent)}');
 
     /// if contains escape sequences, maintain those
   } else if (node.contains('\r') ||
