@@ -3,6 +3,8 @@
 
 library yaml.writer;
 
+import 'special_characters.dart';
+
 dynamic getModifiableNode(node) {
   if (node is Map) {
     return Map.of(
@@ -23,22 +25,50 @@ String toYamlString(node) {
 
 /// Serializes [node] into a String and writes it to the [sink].
 void writeYamlString(node, StringSink sink) {
-  _writeYamlString(node, 0, sink, true);
+  _writeYamlType(node, 0, sink, true);
 }
 
-void _writeYamlString(node, int indent, StringSink ss, bool isTopLevel) {
+void _writeYamlType(node, int indent, StringSink ss, bool isTopLevel) {
   if (node is Map) {
     _mapToYamlString(node, indent, ss, isTopLevel);
   } else if (node is Iterable) {
     _listToYamlString(node, indent, ss, isTopLevel);
   } else if (node is String) {
-    ss..writeln('"${_escapeString(node)}"');
+    _writeYamlString(node, ss);
   } else if (node is double) {
     ss.writeln("!!float $node");
   } else {
     ss.writeln(node);
   }
 }
+
+/// Provides formatting if [node] is a String and writes to the [sink].
+void _writeYamlString(String node, StringSink ss) {
+  /// quotes single length special characters
+  if (node.length == 1 && specialCharacters.contains(node)) {
+    ss..writeln("'${_escapeString(node)}'");
+
+    /// if contains escape sequences, maintain those
+  } else if (node.contains('\r') ||
+      node.contains('\n') ||
+      node.contains('\t')) {
+    ss..writeln('"${_withEscapes(node)}"');
+
+    /// if it contains a [colon, ':'] then put it in quotes to not confuse Yaml
+  } else if (node.contains(':')) {
+    ss..writeln("'${_escapeString(node)}'");
+
+    /// if it contains [slashes, '\'], escape them
+  } else if (node.contains('\\')) {
+    ss..writeln("'${_escapeString(node).replaceAll(r'\', r'\\')}'");
+  } else {
+    ss..writeln('${_escapeString(node)}');
+  }
+  ss..writeln('"${_escapeString(node)}"');
+}
+
+String _withEscapes(String s) =>
+    s.replaceAll('\r', '\\r').replaceAll('\t', '\\t').replaceAll('\n', '\\n');
 
 String _escapeString(String s) =>
     s.replaceAll('"', r'\"').replaceAll("\n", r"\n");
@@ -55,7 +85,7 @@ void _mapToYamlString(Map node, int indent, StringSink ss, bool isTopLevel) {
     final v = node[k];
     _writeIndent(indent, ss);
     ss..write(k)..write(': ');
-    _writeYamlString(v, indent, ss, false);
+    _writeYamlType(v, indent, ss, false);
   });
 }
 
@@ -96,7 +126,7 @@ void _listToYamlString(
   node.forEach((v) {
     _writeIndent(indent, ss);
     ss.write('- ');
-    _writeYamlString(v, indent, ss, false);
+    _writeYamlType(v, indent, ss, false);
   });
 }
 
