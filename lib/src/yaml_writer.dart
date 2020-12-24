@@ -17,11 +17,14 @@ dynamic getModifiableNode(node) {
 }
 
 /// Serializes [node] into a String and returns it.
-String toYamlString(node) {
+String toYamlString(node, {bool sort}) {
   var sb = StringBuffer();
+  _sort = sort ?? false;
   writeYamlString(node, sb);
   return sb.toString();
 }
+
+var _sort = false;
 
 /// Serializes [node] into a String and writes it to the [sink].
 void writeYamlString(node, StringSink sink) {
@@ -79,14 +82,21 @@ void _mapToYamlString(Map node, int indent, StringSink ss, bool isTopLevel) {
     indent += 2;
   }
 
-  final keys = _sortKeys(node);
+  if (_sort) {
+    final keys = _sortKeys(node);
 
-  keys.forEach((k) {
-    final v = node[k];
-    _writeIndent(indent, ss);
-    ss..write(k)..write(': ');
-    _writeYamlType(v, indent, ss, false);
-  });
+    keys.forEach((k) {
+      _writeIndent(indent, ss);
+      ss..write(k)..write(': ');
+      _writeYamlType(node[k], indent, ss, false);
+    });
+  } else {
+    node.forEach((k, v) {
+      _writeIndent(indent, ss);
+      ss..write(k)..write(': ');
+      _writeYamlType(v, indent, ss, false);
+    });
+  }
 }
 
 Iterable<String> _sortKeys(Map m) {
