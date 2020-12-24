@@ -63,13 +63,9 @@ void _writeYamlString(String node, StringSink ss, int indent) {
   } else if (node.contains('\r') ||
       node.contains('\n') ||
       node.contains('\t')) {
-    ss..writeln('"${_multiLine(_withEscapes(node), false, indent)}"');
+    ss..writeln('${_multiLine(_withEscapes(node), false, indent)}');
 
     /// if it contains a [colon, ':'] then put it in quotes to not confuse Yaml
-  } else if (node.contains(':')) {
-    ss..writeln('${_multiLine(_escapeString(node), true, indent)}');
-
-    /// if it contains [slashes, '\'], escape them
   } else if (node.contains('\\')) {
     ss
       ..writeln(
@@ -95,6 +91,7 @@ String _multiLine(String s, bool quotes, int indent) {
       return s;
     }
   } else {
+    quotes = s[0] == ' ';
     var returnString = '>-';
     var length = 80;
     while (s.length > length) {
@@ -109,6 +106,12 @@ String _multiLine(String s, bool quotes, int indent) {
     }
     if (length > s.length && s.length > 0) {
       returnString += '\n${' ' * indent}$s';
+    }
+
+    if (quotes) {
+      returnString = returnString.replaceFirst(
+          '>-\n${' ' * indent}', ">-\n${' ' * indent}\'");
+      returnString += "'";
     }
 
     return returnString;
