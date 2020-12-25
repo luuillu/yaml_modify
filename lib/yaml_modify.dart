@@ -9,3 +9,4 @@ library yaml_modify;
 
 export 'src/yaml_writer.dart';
 export 'package:yaml/yaml.dart';
+export 'src/json2yaml.dart';
