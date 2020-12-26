@@ -99,7 +99,7 @@ String _formatValue(
   if (value == null) {
     return '';
   }
-  return value[0] == ' ' ? " '$value'" : ' $value';
+  return ' $value';
 }
 
 String _formatList(List<dynamic> list, int nesting, YamlStyle style) => list
