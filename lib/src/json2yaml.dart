@@ -39,7 +39,8 @@ String json2yaml(
   Map<String, dynamic> json, {
   YamlStyle yamlStyle = YamlStyle.generic,
 }) =>
-    _renderToYaml(json, 0, yamlStyle).replaceAll(RegExp(r'\-\s*'), '- ');
+    _renderToYaml(json, 0, yamlStyle)
+        .replaceAll(RegExp(r'(?<=\n\s*)\-\s\s*'), '- ');
 
 String _renderToYaml(
   Map<String, dynamic> json,
