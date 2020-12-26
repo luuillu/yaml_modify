@@ -74,9 +74,13 @@ String _formatValue(
   }
   if (value is String) {
     if (_isMultilineString(value)) {
-      return ' |$newLine${value.split('\n').map(
-            (s) => '${_indentation(nesting + 1)}$s',
-          ).join('\n')}';
+      if (_containsEscapeCharacters(value)) {
+        return ' "${_withEscapes(value)}"';
+      } else {
+        return ' |2\n${value.split('\n').map(
+              (s) => '${_indentation(nesting + 1)}$s',
+            ).join('\n')}';
+      }
     }
     if (_containsSpecialCharacters(value) ||
         (_containsFloatingPointPattern(value) &&
@@ -113,3 +117,14 @@ bool _containsSpecialCharacters(String s) =>
     _specialCharacters.any((c) => s.contains(c));
 
 final _specialCharacters = r':{}[],&*#?|-<>=!%@\'.split('');
+
+String _withEscapes(String s) => s
+    .replaceAll('\r', '\\r')
+    .replaceAll('\t', '\\t')
+    .replaceAll('\n', '\\n')
+    .replaceAll('\"', '\\"');
+
+bool _containsEscapeCharacters(String s) =>
+    _escapeCharacters.any((c) => s.contains(c));
+
+final _escapeCharacters = ['\r', '\t'];

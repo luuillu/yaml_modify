@@ -92,7 +92,7 @@ String _multiLine(String s, bool quotes, int indent) {
     }
   } else {
     quotes = s[0] == ' ';
-    var returnString = '>-';
+    var returnString = '>';
     var length = 80;
     while (s.length > length) {
       var index = s.lastIndexOf(' ', length);
