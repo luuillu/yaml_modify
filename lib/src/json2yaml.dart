@@ -97,7 +97,7 @@ String _formatValue(
     }
   }
   if (value == null) {
-    return '';
+    return ' null';
   }
   return ' $value';
 }
