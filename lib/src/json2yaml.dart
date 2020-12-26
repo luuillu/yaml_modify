@@ -85,6 +85,9 @@ String _formatValue(
           ? ' "${value.replaceAll('"', r'\"')}"'
           : " '$value'";
     }
+    if (int.tryParse(value) != null || double.tryParse(value) != null) {
+      return " '$value'";
+    }
   }
   if (value == null) {
     return '';
