@@ -78,7 +78,9 @@ String _formatValue(dynamic value, int nesting, YamlStyle style) {
     if (_containsSpecialCharacters(value) ||
         (_containsFloatingPointPattern(value) &&
             style != YamlStyle.pubspecYaml)) {
-      return " '$value'";
+      return value.contains("'")
+          ? ' "${value.replaceAll('"', '\"')}"'
+          : " '$value'";
     }
   }
   if (value == null) {
