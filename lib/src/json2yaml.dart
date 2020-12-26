@@ -92,6 +92,9 @@ String _formatValue(
     if (int.tryParse(value) != null || double.tryParse(value) != null) {
       return " '$value'";
     }
+    if (value.contains('"') || value[0] == ' ') {
+      return ''' "${value.replaceAll('"', '\\"')}"''';
+    }
   }
   if (value == null) {
     return '';
