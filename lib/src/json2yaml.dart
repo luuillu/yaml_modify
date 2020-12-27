@@ -77,20 +77,24 @@ String _formatValue(
       if (_containsEscapeCharacters(value)) {
         return ' "${_withEscapes(value)}"';
       } else {
-        return ' |2\n${value.split('\n').map(
-              (s) => '${_indentation(nesting + 1)}$s',
-            ).join('\n')}';
+        var finalString = ' |2';
+        var split = value.split('\n');
+        for (var s = 0; s < split.length; s++) {
+          finalString += '\n${_indentation(nesting + 1)}'
+              '${s == 0 ? '"' : ''}'
+              '${_withEscapes(split[s])}';
+        }
+        return '$finalString"';
       }
     }
     if (_containsSpecialCharacters(value) ||
+        _containsEscapeCharacters(value) ||
         value.contains("'") ||
         value.contains('"') ||
         value[0] == ' ' ||
         (_containsFloatingPointPattern(value) &&
             style != YamlStyle.pubspecYaml)) {
-      return value.contains("'")
-          ? ' "${value.replaceAll('"', r'\"')}"'
-          : " '$value'";
+      return value.contains("'") ? ' "${_withEscapes(value)}"' : " '$value'";
     }
     if (_isNumber(value)) {
       return " '$value'";
@@ -133,10 +137,13 @@ final _specialCharacters = r':{}[],&*#?|-<>=!%@\$'.split('');
 bool _containsEscapeCharacters(String s) =>
     _escapeCharacters.any((c) => s.contains(c));
 
-final _escapeCharacters = ['\r', '\t'];
+final _escapeCharacters = ['\r', '\t', '\n', '©', '®', '', '™'];
 
 String _withEscapes(String s) => s
     .replaceAll('\r', '\\r')
     .replaceAll('\t', '\\t')
     .replaceAll('\n', '\\n')
-    .replaceAll('\"', '\\"');
+    .replaceAll('\"', '\\"')
+    .replaceAll('©', '\xA9')
+    .replaceAll('®', '\xAE')
+    .replaceAll('', '\x99');
