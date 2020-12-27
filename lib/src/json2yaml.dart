@@ -104,9 +104,6 @@ String _formatValue(
       return " '$value'";
     }
   }
-  if (value == null) {
-    return '';
-  }
   return ' $value';
 }
 
