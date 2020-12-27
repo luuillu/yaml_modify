@@ -84,17 +84,17 @@ String _formatValue(
     }
     if (_containsSpecialCharacters(value) ||
         value.contains("'") ||
+        value.contains('"') ||
+        value[0] == ' ' ||
         (_containsFloatingPointPattern(value) &&
             style != YamlStyle.pubspecYaml)) {
-      return value.contains("'")
-          ? ' "${value.replaceAll('"', r'\"')}"'
-          : " '$value'";
+      return ' "${value.replaceAll('"', r'\"')}"';
     }
-    if (int.tryParse(value) != null || double.tryParse(value) != null) {
+    if (_isNumber(value)) {
       return " '$value'";
     }
-    if (value.contains('"') || value[0] == ' ') {
-      return ''' "${value.replaceAll('"', '\\"')}"''';
+    if (_isBooleanString(value)) {
+      return " '$value'";
     }
   }
   if (value == null) {
@@ -114,21 +114,27 @@ String _spaces(int n) => ''.padRight(n, ' ');
 
 bool _isMultilineString(String s) => s.contains('\n');
 
+bool _isNumber(String s) =>
+    int.tryParse(s) != null || double.tryParse(s) != null;
+
 bool _containsFloatingPointPattern(String s) =>
     s.contains(RegExp(r'[0-9]\.[0-9]'));
+
+bool _isBooleanString(String s) =>
+    s.toLowerCase() == 'true' || s.toLowerCase() == 'false';
 
 bool _containsSpecialCharacters(String s) =>
     _specialCharacters.any((c) => s.contains(c));
 
 final _specialCharacters = r':{}[],&*#?|-<>=!%@\$'.split('');
 
+bool _containsEscapeCharacters(String s) =>
+    _escapeCharacters.any((c) => s.contains(c));
+
+final _escapeCharacters = ['\r', '\t'];
+
 String _withEscapes(String s) => s
     .replaceAll('\r', '\\r')
     .replaceAll('\t', '\\t')
     .replaceAll('\n', '\\n')
     .replaceAll('\"', '\\"');
-
-bool _containsEscapeCharacters(String s) =>
-    _escapeCharacters.any((c) => s.contains(c));
-
-final _escapeCharacters = ['\r', '\t'];
