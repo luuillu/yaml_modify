@@ -88,7 +88,9 @@ String _formatValue(
         value[0] == ' ' ||
         (_containsFloatingPointPattern(value) &&
             style != YamlStyle.pubspecYaml)) {
-      return ' "${value.replaceAll('"', r'\"')}"';
+      return value.contains("'")
+          ? ' "${value.replaceAll('"', r'\"')}"'
+          : " '$value'";
     }
     if (_isNumber(value)) {
       return " '$value'";
