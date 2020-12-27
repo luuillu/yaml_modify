@@ -137,7 +137,14 @@ final _specialCharacters = r':{}[],&*#?|-<>=!%@\$'.split('');
 bool _containsEscapeCharacters(String s) =>
     _escapeCharacters.any((c) => s.contains(c));
 
-final _escapeCharacters = ['\r', '\t', '\n', '©', '®', '', '™', '\\'];
+final _escapeCharacters = [
+  '\r',
+  '\t',
+  '\n',
+  '',
+  '',
+  '\\',
+];
 
 String _withEscapes(String s) => s
     .replaceAll('\\', r'\\')
@@ -147,4 +154,5 @@ String _withEscapes(String s) => s
     .replaceAll('\"', '\\"')
     .replaceAll('©', '\xA9')
     .replaceAll('®', '\xAE')
-    .replaceAll('', '\x99');
+    .replaceAll('', '\x99')
+    .replaceAll('', '\x9D');
