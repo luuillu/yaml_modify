@@ -92,6 +92,7 @@ String _formatValue(
         value.contains("'") ||
         value.contains('"') ||
         value[0] == ' ' ||
+        value[value.length - 1] == ' ' ||
         (_containsFloatingPointPattern(value) &&
             style != YamlStyle.pubspecYaml)) {
       return value.contains("'") ? ' "${_withEscapes(value)}"' : " '$value'";
