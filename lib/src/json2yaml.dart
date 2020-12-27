@@ -100,12 +100,12 @@ String _formatValue(
     if (_isNumber(value)) {
       return " '$value'";
     }
-    if (_isBooleanString(value)) {
+    if (_isBooleanOrNullString(value)) {
       return " '$value'";
     }
   }
   if (value == null) {
-    return ' null';
+    return '';
   }
   return ' $value';
 }
@@ -127,8 +127,10 @@ bool _isNumber(String s) =>
 bool _containsFloatingPointPattern(String s) =>
     s.contains(RegExp(r'[0-9]\.[0-9]'));
 
-bool _isBooleanString(String s) =>
-    s.toLowerCase() == 'true' || s.toLowerCase() == 'false';
+bool _isBooleanOrNullString(String s) =>
+    s.toLowerCase() == 'true' ||
+    s.toLowerCase() == 'false' ||
+    s.toLowerCase() == 'null';
 
 bool _containsSpecialCharacters(String s) =>
     _specialCharacters.any((c) => s.contains(c));
