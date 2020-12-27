@@ -83,6 +83,7 @@ String _formatValue(
       }
     }
     if (_containsSpecialCharacters(value) ||
+        value.contains("'") ||
         (_containsFloatingPointPattern(value) &&
             style != YamlStyle.pubspecYaml)) {
       return value.contains("'")
@@ -119,7 +120,7 @@ bool _containsFloatingPointPattern(String s) =>
 bool _containsSpecialCharacters(String s) =>
     _specialCharacters.any((c) => s.contains(c));
 
-final _specialCharacters = r':{}[],&*#?|-<>=!%@\'.split('');
+final _specialCharacters = r':{}[],&*#?|-<>=!%@\$'.split('');
 
 String _withEscapes(String s) => s
     .replaceAll('\r', '\\r')
