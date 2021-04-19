@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.4
+  Added in lots of formatting for Strings
+  
 ## 0.1.3
   Fix Bugs
 
